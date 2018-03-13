@@ -19,4 +19,12 @@ fun main(args: Array<String>) {
     val firstName = user[0]
     val lastName = user[1]
     println("Indexed firstName: $firstName | Indexed lastName: $lastName")
+
+    try {
+        user.firstName = "        \t   "
+    } catch (e: IllegalArgumentException) {
+        println("${e.message}")
+    }
+
+    println(user)
 }

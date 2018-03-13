@@ -19,6 +19,10 @@ private class CachedCSVDelegate(private val filePath: String, private val index:
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
+        if (value.isBlank()) {
+            throw IllegalArgumentException("Property '${property.name}' in class '${thisRef.javaClass.name}' cannot be set to whitespace.")
+        }
+
         val newContents = readFile(filePath).toMutableList().apply {
             set(index, value)
         }
