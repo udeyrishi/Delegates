@@ -11,9 +11,8 @@ private class CachedCSVDelegate(private val filePath: String, private val index:
     private var cache: String? = null
 
     init {
-        // How to get the thisRef and property?! Need to pass from the caller. Ew
         if (initialValue != null) {
-            setValue(_, _, initialValue)
+            uncheckedSetValue(initialValue)
         }
     }
 
@@ -67,4 +66,13 @@ private fun checkNotBlank(thisRef: Any, property: KProperty<*>, value: String) {
     }
 }
 
-fun cachedCSV(filePath: String, index: Int, initialValue: String? = null): ReadWriteProperty<Any, String> = CachedCSVDelegate(filePath, index, initialValue)
+private class CachedCSVDelegateProvider(private val filePath: String, private val index: Int, private val initialValue: String? = null) : ReadWriteDelegateProvider<Any, String> {
+    override fun provideDelegate(thisRef: Any, property: KProperty<*>): CachedCSVDelegate {
+        if (initialValue != null) {
+            checkNotBlank(thisRef, property, initialValue)
+        }
+        return CachedCSVDelegate(filePath, index, initialValue)
+    }
+}
+
+fun cachedCSV(filePath: String, index: Int, initialValue: String? = null): ReadWriteDelegateProvider<Any, String> = CachedCSVDelegateProvider(filePath, index, initialValue)

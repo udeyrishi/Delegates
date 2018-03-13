@@ -5,7 +5,13 @@ fun main(args: Array<String>) {
         throw IllegalArgumentException("Please specify the CSV path as command line args")
     }
 
-    val user = User(args[0], firstName = "Bertram", lastName = "Gilfoyle")
+    val user = try {
+        User(args[0], firstName = "Bertram", lastName = "")
+    } catch (e: IllegalArgumentException) {
+        println("Woohoo! It works!")
+        User(args[0], firstName = "Bertram", lastName = "Gilfoyle")
+    }
+
     println(user)
 
     user.firstName = "Erlich"
