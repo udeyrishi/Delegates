@@ -7,7 +7,7 @@ import java.io.FileWriter
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class CachedCSVDelegate(private val filePath: String, private val index: Int) : ReadWriteProperty<Any, String> {
+private class CachedCSVDelegate(private val filePath: String, private val index: Int) : ReadWriteProperty<Any, String> {
     private var cache: String? = null
 
     override fun getValue(thisRef: Any, property: KProperty<*>): String {
@@ -48,3 +48,5 @@ class CachedCSVDelegate(private val filePath: String, private val index: Int) : 
         }
     }
 }
+
+fun cachedCSV(filePath: String, index: Int): ReadWriteProperty<Any, String> = CachedCSVDelegate(filePath, index)

@@ -9,7 +9,7 @@ fun main(args: Array<String>) {
     println(user)
 
     user.firstName = "Erlich"
-    user.lastName = "Backman"
+    user.lastName = "Bachman"
     println(user)
 
     user.firstName = "Udey"
