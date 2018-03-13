@@ -7,8 +7,15 @@ import java.io.FileWriter
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-private class CachedCSVDelegate(private val filePath: String, private val index: Int) : ReadWriteProperty<Any, String> {
+private class CachedCSVDelegate(private val filePath: String, private val index: Int, initialValue: String? = null) : ReadWriteProperty<Any, String> {
     private var cache: String? = null
+
+    init {
+        // How to get the thisRef and property?! Need to pass from the caller. Ew
+        if (initialValue != null) {
+            setValue(_, _, initialValue)
+        }
+    }
 
     override fun getValue(thisRef: Any, property: KProperty<*>): String {
         return cache ?: run {
@@ -19,10 +26,11 @@ private class CachedCSVDelegate(private val filePath: String, private val index:
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
-        if (value.isBlank()) {
-            throw IllegalArgumentException("Property '${property.name}' in class '${thisRef.javaClass.name}' cannot be set to whitespace.")
-        }
+        checkNotBlank(thisRef, property, value)
+        uncheckedSetValue(value)
+    }
 
+    private fun uncheckedSetValue(value: String) {
         val newContents = readFile(filePath).toMutableList().apply {
             set(index, value)
         }
@@ -53,4 +61,10 @@ private class CachedCSVDelegate(private val filePath: String, private val index:
     }
 }
 
-fun cachedCSV(filePath: String, index: Int): ReadWriteProperty<Any, String> = CachedCSVDelegate(filePath, index)
+private fun checkNotBlank(thisRef: Any, property: KProperty<*>, value: String) {
+    if (value.isBlank()) {
+        throw IllegalArgumentException("Property '${property.name}' in class '${thisRef.javaClass.name}' cannot be set to whitespace.")
+    }
+}
+
+fun cachedCSV(filePath: String, index: Int, initialValue: String? = null): ReadWriteProperty<Any, String> = CachedCSVDelegate(filePath, index, initialValue)

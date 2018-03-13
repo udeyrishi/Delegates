@@ -1,8 +1,8 @@
 package com.udeyrishi.delegates
 
-class User(filePath: String) {
-    var firstName: String by cachedCSV(filePath, 0)
-    var lastName: String by cachedCSV(filePath, 1)
+class User(filePath: String, firstName: String? = null, lastName: String? = null) {
+    var firstName: String by cachedCSV(filePath, 0, initialValue = firstName)
+    var lastName: String by cachedCSV(filePath, 1, initialValue = lastName)
 
     override fun toString(): String {
         return "First Name: $firstName | Last Name: $lastName"
