@@ -45,6 +45,14 @@ class User(private val filePath: String) {
         return "First Name: $firstName | Last Name: $lastName"
     }
 
+    operator fun get(index: Int): String {
+        return when (index) {
+            0 -> firstName
+            1 -> lastName
+            else -> throw IndexOutOfBoundsException("index must be in the range [0, 1]")
+        }
+    }
+
     companion object {
         private fun readFile(filePath: String): List<String> {
             return BufferedReader(FileReader(filePath)).use {

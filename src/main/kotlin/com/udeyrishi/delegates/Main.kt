@@ -15,4 +15,8 @@ fun main(args: Array<String>) {
     user.firstName = "Udey"
     user.lastName = "Rishi"
     println(user)
+
+    val firstName = user[0]
+    val lastName = user[1]
+    println("Indexed firstName: $firstName | Indexed lastName: $lastName")
 }
