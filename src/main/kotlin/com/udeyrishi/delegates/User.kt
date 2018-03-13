@@ -1,3 +1,7 @@
+/**
+ Copyright (c) 2018 Udey Rishi. All rights reserved.
+*/
+
 package com.udeyrishi.delegates
 
 class User(filePath: String, firstName: String? = null, lastName: String? = null) {
@@ -15,6 +19,4 @@ class User(filePath: String, firstName: String? = null, lastName: String? = null
             else -> throw IndexOutOfBoundsException("index must be in the range [0, 1]")
         }
     }
-
-
 }
