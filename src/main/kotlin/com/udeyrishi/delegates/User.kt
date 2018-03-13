@@ -6,44 +6,43 @@ import java.io.FileReader
 import java.io.FileWriter
 
 class User(private val filePath: String) {
-    private var cachedFirstName: String? = null
-    private var cachedLastName: String? = null
-
-    fun getFirstName(): String {
-        return cachedFirstName ?: run {
-            val contents = readFile(filePath)
-            cachedFirstName = contents[0]
-            contents[0]
+    private var _firstName: String? = null
+    var firstName: String
+        get() {
+            return _firstName ?: run {
+                val contents = readFile(filePath)
+                _firstName = contents[0]
+                contents[0]
+            }
         }
-    }
+        set(value) {
+            val newContents = readFile(filePath).toMutableList().apply {
+                set(0, value)
+            }
 
-    fun setFirstName(value: String) {
-        val newContents = readFile(filePath).toMutableList().apply {
-            set(0, value)
+            _firstName = value
+            writeFile(filePath, newContents)
         }
 
-        cachedFirstName = value
-        writeFile(filePath, newContents)
-    }
-
-    fun getLastName(): String {
-        return cachedLastName ?: run {
-            val contents = readFile(filePath)
-            cachedLastName = contents[1]
-            contents[1]
+    private var _lastName: String? = null
+    var lastName: String
+        get() {
+            return _lastName ?: run {
+                val contents = readFile(filePath)
+                _lastName = contents[1]
+                contents[1]
+            }
         }
-    }
-
-    fun setLastName(value: String) {
-        val newContents = readFile(filePath).toMutableList().apply {
-            set(1, value)
+        set(value) {
+            val newContents = readFile(filePath).toMutableList().apply {
+                set(1, value)
+            }
+            _lastName = value
+            writeFile(filePath, newContents)
         }
-        cachedLastName = value
-        writeFile(filePath, newContents)
-    }
 
     override fun toString(): String {
-        return "First Name: ${getFirstName()} | Last Name: ${getLastName()}"
+        return "First Name: $firstName | Last Name: $lastName"
     }
 
     companion object {

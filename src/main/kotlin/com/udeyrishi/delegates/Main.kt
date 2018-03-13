@@ -8,11 +8,11 @@ fun main(args: Array<String>) {
     val user = User(args[0])
     println(user)
 
-    user.setFirstName("Erlich")
-    user.setLastName("Bachman")
+    user.firstName = "Erlich"
+    user.lastName = "Backman"
     println(user)
 
-    user.setFirstName("Udey")
-    user.setLastName("Rishi")
+    user.firstName = "Udey"
+    user.lastName = "Rishi"
     println(user)
 }
